@@ -66,7 +66,7 @@ class MeioElfo(Raca):
         ]
         super().__init__("Meio-Elfo", 9, 9, "Caos", habilidades)
 
-class Cromo(Raca):
+class Gnomo(Raca):
     def __init__(self):
         habilidades = [
             "Avaliadores: Percepção aguçada para detectar perigos",
@@ -83,7 +83,7 @@ class GeradorRaca:
             "3": Anao(),
             "4": Halfling(),
             "5": MeioElfo(),
-            "6": Cromo()
+            "6": Gnomo()
         }
     
     def listar_racas(self):

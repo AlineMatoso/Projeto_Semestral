@@ -1,5 +1,5 @@
 from ModoJogo import ModoClassico, ModoAventureiro, ModoHeroico
-from Racas import Humano, Elfo, Anao, Halfling, MeioElfo, Cromo, GeradorRaca
+from Racas import Humano, Elfo, Anao, Halfling, MeioElfo, Gnomo, GeradorRaca
 from Classes import Guerreiro, Barbaro, Druida, Clerigo, Mago, Ladrao, GeradorClasse
 import random
 
