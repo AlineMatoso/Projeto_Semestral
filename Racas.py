@@ -73,7 +73,7 @@ class Gnomo(Raca):
             "Sacazes e Vigorosos: +1 em JPS e JPC",
             "Restrições: Limitações em equipamentos específicos"
         ]
-        super().__init__("Cromo", 6, 18, "Neutralidade", habilidades)
+        super().__init__("Gnomo", 6, 18, "Neutralidade", habilidades)
 
 class GeradorRaca:
     def __init__(self):
