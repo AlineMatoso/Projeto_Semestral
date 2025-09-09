@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criador de Personagens - Old Dragon 2</title>
+    <style>
+        :root {
+            --primary-color: #8B4513;
+            --secondary-color: #D2B48C;
+            --accent-color: #A0522D;
+            --light-color: #FAF0E6;
+            --dark-color: #4A2C2A;
+            --success-color: #5cb85c;
+            --danger-color: #d9534f;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        h1, h2, h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            background-color: var(--accent-color);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #c19a6b;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+        }
+        
+        .radio-group {
+            margin: 15px 0;
+        }
+        
+        .radio-option {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .radio-option:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .radio-option input {
+            margin-right: 10px;
+        }
+        
+        .attribute-display {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 12px;
+            background-color: #f9f9f9;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .character-sheet {
+            border: 2px solid var(--primary-color);
+            padding: 25px;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+        }
+        
+        .sheet-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed var(--secondary-color);
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .dice-result {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: var(--secondary-color);
+            border-radius: 4px;
+            margin: 0 5px;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .section {
+                padding: 15px;
+            }
+            
+            .navigation {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Criador de Personagens - Old Dragon 2</h1>
+            <p>Uma ferramenta para criar personagens para o sistema Old Dragon 2</p>
+        </header>
+        
+        <div id="nome-section" class="section">
+            <h2>Nome do Personagem</h2>
+            <div class="form-group">
+                <label for="nome-personagem">Digite o nome do seu personagem:</label>
+                <input type="text" id="nome-personagem" placeholder="Ex: Aragorn, Legolas, etc.">
+            </div>
+            <button id="btn-nome" class="btn">Avançar</button>
+        </div>
+        
+        <div id="modo-section" class="section hidden">
+            <h2>Modo de Geração de Atributos</h2>
+            <p>Selecione como deseja gerar os atributos do seu personagem:</p>
+            
+            <div class="radio-group">
+                <div class="radio-option">
+                    <input type="radio" id="modo-classico" name="modo" value="classico">
+                    <label for="modo-classico">
+                        <strong>Clássico</strong> - Role 3d6 seis vezes e distribua na ordem: Força, Destreza, Constituição, Inteligência, Sabedoria, Carisma
+                    </label>
+                </div>
+                
+                <div class="radio-option">
+                    <input type="radio" id="modo-aventureiro" name="modo" value="aventureiro">
+                    <label for="modo-aventureiro">
+                        <strong>Aventureiro</strong> - Role 3d6 seis vezes e distribua livremente entre os atributos
+                    </label>
+                </div>
+                
+                <div class="radio-option">
+                    <input type="radio" id="modo-heroico" name="modo" value="heroico">
+                    <label for="modo-heroico">
+                        <strong>Heroico</strong> - Role 4d6 seis vezes, eliminando o menor valor de cada rolagem, e distribua livremente
+                    </label>
+                </div>
+            </div>
+            
+            <div class="navigation">
+                <button id="btn-modo-voltar" class="btn btn-secondary">Voltar</button>
+                <button id="btn-modo-avancar" class="btn">Rolar Atributos</button>
+            </div>
+        </div>
+        
+        <div id="atributos-section" class="section hidden">
+            <h2>Atributos do Personagem</h2>
+            <div id="atributos-container"></div>
+            
+            <div class="navigation">
+                <button id="btn-atributos-voltar" class="btn btn-secondary">Voltar</button>
+                <button id="btn-atributos-avancar" class="btn">Avançar</button>
+            </div>
+        </div>
+        
+        <div id="raca-section" class="section hidden">
+            <h2>Escolha de Raça</h2>
+            <p>Selecione a raça do seu personagem:</p>
+            <div id="racas-container" class="radio-group"></div>
+            
+            <div class="navigation">
+                <button id="btn-raca-voltar" class="btn btn-secondary">Voltar</button>
+                <button id="btn-raca-avancar" class="btn">Avançar</button>
+            </div>
+        </div>
+        
+        <div id="classe-section" class="section hidden">
+            <h2>Escolha de Classe</h2>
+            <p>Selecione a classe do seu personagem:</p>
+            <div id="classes-container" class="radio-group"></div>
+            
+            <div class="navigation">
+                <button id="btn-classe-voltar" class="btn btn-secondary">Voltar</button>
+                <button id="btn-classe-avancar" class="btn">Finalizar Personagem</button>
+            </div>
+        </div>
+        
+        <div id="resultado-section" class="section hidden">
+            <h2>Ficha do Personagem</h2>
+            <div id="character-sheet" class="character-sheet"></div>
+            
+            <div class="navigation">
+                <button id="btn-novo-personagem" class="btn">Criar Novo Personagem</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modelos
+        class Character {
+            constructor() {
+                this.nome = "";
+                this.modo = "";
+                this.atributos = {};
+                this.raca = null;
+                this.classe = null;
+                this.pontosVida = 0;
+            }
+            
+            calcularModificador(valor) {
+                if (valor <= 3) return -3;
+                if (valor <= 5) return -2;
+                if (valor <= 8) return -1;
+                if (valor <= 12) return 0;
+                if (valor <= 14) return 1;
+                if (valor <= 16) return 2;
+                if (valor <= 18) return 3;
+                return 4;
+            }
+            
+            classificarAtributo(nome, valor) {
+                const classificacoes = {
+                    "Força": {8: "Fraco", 12: "Mediano", 16: "Forte", 99: "Muito Forte"},
+                    "Destreza": {8: "Letárgico", 12: "Mediano", 16: "Ágil", 99: "Preciso"},
+                    "Constituição": {8: "Frágil", 12: "Mediano", 16: "Resistente", 99: "Vigoroso"},
+                    "Inteligência": {8: "Inepto", 12: "Mediano", 16: "Inteligente", 99: "Gênio"},
+                    "Sabedoria": {8: "Tolo", 12: "Mediano", 16: "Intuitivo", 99: "Presidente"},
+                    "Carisma": {8: "Descortês", 12: "Mediano", 16: "Influente", 99: "Ídolo"}
+                };
+                
+                const limites = Object.keys(classificacoes[nome])
+                    .map(Number)
+                    .sort((a, b) => a - b);
+                
+                for (const limite of limites) {
+                    if (valor <= limite) {
+                        return classificacoes[nome][limite];
+                    }
+                }
+                
+                return "Desconhecido";
+            }
+        }
+
+        // Controlador Principal
+        class CharacterController {
+            constructor() {
+                this.character = new Character();
+                this.currentSection = 'nome-section';
+                this.init();
+            }
+            
+            init() {
+                this.setupEventListeners();
+                this.loadRacas();
+                this.loadClasses();
+            }
+            
+            setupEventListeners() {
+                // Navegação entre seções
+                document.getElementById('btn-nome').addEventListener('click', () => this.showSection('modo-section'));
+                document.getElementById('btn-modo-voltar').addEventListener('click', () => this.showSection('nome-section'));
+                document.getElementById('btn-modo-avancar').addEventListener('click', () => this.rolarAtributos());
+                document.getElementById('btn-atributos-voltar').addEventListener('click', () => this.showSection('modo-section'));
+                document.getElementById('btn-atributos-avancar').addEventListener('click', () => this.showSection('raca-section'));
+                document.getElementById('btn-raca-voltar').addEventListener('click', () => this.showSection('atributos-section'));
+                document.getElementById('btn-raca-avancar').addEventListener('click', () => this.showSection('classe-section'));
+                document.getElementById('btn-classe-voltar').addEventListener('click', () => this.showSection('raca-section'));
+                document.getElementById('btn-classe-avancar').addEventListener('click', () => this.finalizarPersonagem());
+                document.getElementById('btn-novo-personagem').addEventListener('click', () => window.location.reload());
+                
+                // Input do nome
+                document.getElementById('nome-personagem').addEventListener('input', (e) => {
+                    this.character.nome = e.target.value;
+                });
+            }
+            
+            showSection(sectionId) {
+                // Validar se pode avançar
+                if (sectionId === 'modo-section' && !this.character.nome) {
+                    alert('Por favor, digite um nome para o personagem.');
+                    return;
+                }
+                
+                if (sectionId === 'raca-section' && Object.keys(this.character.atributos).length === 0) {
+                    alert('Por favor, role os atributos primeiro.');
+                    return;
+                }
+                
+                // Esconder todas as seções
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.add('hidden');
+                });
+                
+                // Mostrar a seção solicitada
+                document.getElementById(sectionId).classList.remove('hidden');
+                this.currentSection = sectionId;
+            }
+            
+            rolarAtributos() {
+                const modoSelecionado = document.querySelector('input[name="modo"]:checked');
+                if (!modoSelecionado) {
+                    alert('Por favor, selecione um modo de geração de atributos.');
+                    return;
+                }
+                
+                this.character.modo = modoSelecionado.value;
+                
+                // Simular rolagem de dados (em um caso real, isso seria mais complexo)
+                const atributosNomes = ["Força", "Destreza", "Constituição", "Inteligência", "Sabedoria", "Carisma"];
+                const atributos = {};
+                
+                atributosNomes.forEach(nome => {
+                    // Simulação de rolagem de dados
+                    let valor;
+                    if (this.character.modo === 'classico') {
+                        // 3d6
+                        valor = Math.floor(Math.random() * 11) + 6; // 6-16
+                    } else if (this.character.modo === 'aventureiro') {
+                        // 3d6
+                        valor = Math.floor(Math.random() * 11) + 6; // 6-16
+                    } else {
+                        // 4d6 descartando o menor
+                        valor = Math.floor(Math.random() * 13) + 8; // 8-20
+                    }
+                    atributos[nome] = valor;
+                });
+                
+                this.character.atributos = atributos;
+                this.exibirAtributos();
+                this.showSection('atributos-section');
+            }
+            
+            exibirAtributos() {
+                const container = document.getElementById('atributos-container');
+                container.innerHTML = '';
+                
+                for (const [atributo, valor] of Object.entries(this.character.atributos)) {
+                    const div = document.createElement('div');
+                    div.className = 'attribute-display';
+                    
+                    const classificacao = this.character.classificarAtributo(atributo, valor);
+                    const modificador = this.character.calcularModificador(valor);
+                    const sinal = modificador >= 0 ? '+' : '';
+                    
+                    div.innerHTML = `
+                        <div><strong>${atributo}:</strong> ${valor} (${classificacao})</div>
+                        <div>Modificador: ${sinal}${modificador}</div>
+                    `;
+                    
+                    container.appendChild(div);
+                }
+            }
+            
+            loadRacas() {
+                const racas = [
+                    { id: 1, nome: "Humano", descricao: "Adaptáveis e ambiciosos" },
+                    { id: 2, nome: "Elfo", descricao: "Graciosos e perceptivos" },
+                    { id: 3, nome: "Anão", descricao: "Resistentes e tradicionais" },
+                    { id: 4, nome: "Halfling", descricao: "Furtivos e destemidos" },
+                    { id: 5, nome: "Meio-Elfo", descricao: "Versáteis e carismáticos" },
+                    { id: 6, nome: "Gnomo", descricao: "Inventivos e curiosos" }
+                ];
+                
+                const container = document.getElementById('racas-container');
+                container.innerHTML = '';
+                
+                racas.forEach(raca => {
+                    const div = document.createElement('div');
+                    div.className = 'radio-option';
+                    div.innerHTML = `
+                        <input type="radio" name="raca" id="raca-${raca.id}" value="${raca.id}">
+                        <label for="raca-${raca.id}">
+                            <strong>${raca.nome}</strong> - ${raca.descricao}
+                        </label>
+                    `;
+                    
+                    div.querySelector('input').addEventListener('change', (e) => {
+                        if (e.target.checked) {
+                            this.character.raca = raca;
+                        }
+                    });
+                    
+                    container.appendChild(div);
+                });
+            }
+            
+            loadClasses() {
+                const classes = [
+                    { id: 1, nome: "Guerreiro", descricao: "Especialista em combate" },
+                    { id: 2, nome: "Bárbaro", descricao: "Selvagem e poderoso" },
+                    { id: 3, nome: "Druida", descricao: "Conectado com a natureza" },
+                    { id: 4, nome: "Clérigo", descricao: "Servo divino" },
+                    { id: 5, nome: "Mago", descricao: "Usuário de magia arcana" },
+                    { id: 6, nome: "Ladrão", descricao: "Especialista em habilidades" }
+                ];
+                
+                const container = document.getElementById('classes-container');
+                container.innerHTML = '';
+                
+                classes.forEach(classe => {
+                    const div = document.createElement('div');
+                    div.className = 'radio-option';
+                    div.innerHTML = `
+                        <input type="radio" name="classe" id="classe-${classe.id}" value="${classe.id}">
+                        <label for="classe-${classe.id}">
+                            <strong>${classe.nome}</strong> - ${classe.descricao}
+                        </label>
+                    `;
+                    
+                    div.querySelector('input').addEventListener('change', (e) => {
+                        if (e.target.checked) {
+                            this.character.classe = classe;
+                            
+                            // Calcular pontos de vida baseado na constituição
+                            const modCon = this.character.calcularModificador(
+                                this.character.atributos["Constituição"] || 10
+                            );
+                            
+                            // Simular rolagem de pontos de vida (depende da classe)
+                            let dadoVida;
+                            if (classe.nome === "Guerreiro" || classe.nome === "Bárbaro") {
+                                dadoVida = 10;
+                            } else if (classe.nome === "Clérigo" || classe.nome === "Druida") {
+                                dadoVida = 8;
+                            } else if (classe.nome === "Ladrão") {
+                                dadoVida = 6;
+                            } else {
+                                dadoVida = 4;
+                            }
+                            
+                            const rolagem = Math.floor(Math.random() * dadoVida) + 1;
+                            this.character.pontosVida = dadoVida + rolagem + modCon;
+                        }
+                    });
+                    
+                    container.appendChild(div);
+                });
+            }
+            
+            finalizarPersonagem() {
+                if (!this.character.raca) {
+                    alert('Por favor, selecione uma raça.');
+                    return;
+                }
+                
+                if (!this.character.classe) {
+                    alert('Por favor, selecione uma classe.');
+                    return;
+                }
+                
+                this.exibirFichaPersonagem();
+                this.showSection('resultado-section');
+            }
+            
+            exibirFichaPersonagem() {
+                const container = document.getElementById('character-sheet');
+                
+                let atributosHTML = '';
+                for (const [atributo, valor] of Object.entries(this.character.atributos)) {
+                    const classificacao = this.character.classificarAtributo(atributo, valor);
+                    const modificador = this.character.calcularModificador(valor);
+                    const sinal = modificador >= 0 ? '+' : '';
+                    
+                    atributosHTML += `
+                        <div class="attribute-display">
+                            <div><strong>${atributo}:</strong> ${valor} (${classificacao})</div>
+                            <div>Modificador: ${sinal}${modificador}</div>
+                        </div>
+                    `;
+                }
+                
+                container.innerHTML = `
+                    <div class="sheet-section">
+                        <h3>Informações Básicas</h3>
+                        <p><strong>Nome:</strong> ${this.character.nome}</p>
+                        <p><strong>Raça:</strong> ${this.character.raca.nome}</p>
+                        <p><strong>Classe:</strong> ${this.character.classe.nome}</p>
+                        <p><strong>Pontos de Vida:</strong> ${this.character.pontosVida}</p>
+                    </div>
+                    
+                    <div class="sheet-section">
+                        <h3>Atributos</h3>
+                        <p><strong>Modo de geração:</strong> ${this.character.modo}</p>
+                        ${atributosHTML}
+                    </div>
+                    
+                    <div class="sheet-section">
+                        <h3>Detalhes da Raça</h3>
+                        <p>${this.character.raca.descricao}</p>
+                    </div>
+                    
+                    <div class="sheet-section">
+                        <h3>Detalhes da Classe</h3>
+                        <p>${this.character.classe.descricao}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Inicializar a aplicação quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', () => {
+            const app = new CharacterController();
+        });
+    </script>
+</body>
+</html>
