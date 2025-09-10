@@ -1,0 +1,158 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #8B0000;
+    color: white;
+    border-radius: 5px;
+}
+
+header h1 {
+    font-size: 2.5rem;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.radio-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: normal;
+}
+
+.radio-group input[type="radio"] {
+    margin-right: 10px;
+}
+
+button, .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #8B0000;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+button:hover, .btn:hover {
+    background-color: #A52A2A;
+}
+
+.lista-racas, .lista-classes {
+    margin-top: 20px;
+}
+
+.raca-item, .classe-item {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    background-color: white;
+}
+
+.habilidades {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+.habilidades ul {
+    list-style-type: none;
+}
+
+.habilidades li {
+    padding: 5px 0;
+    border-bottom: 1px dotted #eee;
+}
+
+.ficha-personagem {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.info-basica {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.atributos table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.atributos th, .atributos td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.atributos th {
+    background-color: #f8f8f8;
+}
+
+.info-raca, .info-classe {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.info-raca ul, .info-classe ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.info-raca li, .info-classe li {
+    padding: 5px 0;
+    border-bottom: 1px dotted #eee;
+}
+
+.acoes {
+    text-align: center;
+    margin-top: 30px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    color: #666;
+}

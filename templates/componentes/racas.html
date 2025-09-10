@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="selecao-raca">
+    <h2>Seleção de Raça</h2>
+    <p>Jogador: {{ session.nome_jogador }}</p>
+    
+    <form action="{{ url_for('escolher_raca') }}" method="post">
+        <div class="form-group">
+            <label>Escolha como selecionar a raça:</label>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="opcao_raca" value="escolher" required>
+                    Escolher uma raça
+                </label>
+                <label>
+                    <input type="radio" name="opcao_raca" value="sortear">
+                    Sortear aleatoriamente
+                </label>
+            </div>
+        </div>
+        
+        <div id="lista-racas" class="lista-racas">
+            <h3>Raças Disponíveis:</h3>
+            {% for id, raca in racas.items() %}
+            <div class="raca-item">
+                <label>
+                    <input type="radio" name="raca_id" value="{{ id }}">
+                    <strong>{{ raca.nome }}</strong> - Movimento: {{ raca.movimento }}m, Infravisão: {{ raca.infravisao }}
+                </label>
+                <div class="habilidades">
+                    <strong>Habilidades:</strong>
+                    <ul>
+                        {% for habilidade in raca.habilidades %}
+                        <li>{{ habilidade }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <button type="submit">Próximo</button>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const opcoes = document.querySelectorAll('input[name="opcao_raca"]');
+    const listaRacas = document.getElementById('lista-racas');
+    
+    opcoes.forEach(opcao => {
+        opcao.addEventListener('change', function() {
+            if (this.value === 'sortear') {
+                listaRacas.style.display = 'none';
+            } else {
+                listaRacas.style.display = 'block';
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

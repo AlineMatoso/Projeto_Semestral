@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="ficha-personagem">
+    <h2>Ficha do Personagem</h2>
+    
+    <div class="info-basica">
+        <p><strong>Jogador:</strong> {{ nome_jogador }}</p>
+        <p><strong>Raça:</strong> {{ raca.nome }}</p>
+        <p><strong>Classe:</strong> {{ classe.nome }}</p>
+        <p><strong>Pontos de Vida:</strong> {{ pontos_vida }}</p>
+    </div>
+    
+    <div class="atributos">
+        <h3>Atributos</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Atributo</th>
+                    <th>Valor</th>
+                    <th>Classificação</th>
+                    <th>Modificador</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for nome, dados in atributos.items() %}
+                <tr>
+                    <td>{{ nome }}</td>
+                    <td>{{ dados.valor }}</td>
+                    <td>{{ dados.classificacao }}</td>
+                    <td>{{ dados.modificador }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="info-raca">
+        <h3>Informações da Raça</h3>
+        <p><strong>Movimento:</strong> {{ raca.movimento }} metros</p>
+        <p><strong>Infravisão:</strong> {{ raca.infravisao }}</p>
+        <p><strong>Tendência de Alinhamento:</strong> {{ raca.alinhamento_tendencia }}</p>
+        <p><strong>Habilidades:</strong></p>
+        <ul>
+            {% for habilidade in raca.habilidades %}
+            <li>{{ habilidade }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <div class="info-classe">
+        <h3>Informações da Classe</h3>
+        <p><strong>Dado de Vida:</strong> {{ classe.dado_vida }}</p>
+        <p><strong>Armas Permitidas:</strong> {{ classe.armas }}</p>
+        <p><strong>Armaduras Permitidas:</strong> {{ classe.armaduras }}</p>
+        <p><strong>Itens Mágicos:</strong> {{ classe.itens_magicos }}</p>
+        <p><strong>Habilidades:</strong></p>
+        <ul>
+            {% for habilidade in classe.habilidades %}
+            <li>{{ habilidade }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <div class="acoes">
+        <a href="{{ url_for('reiniciar') }}" class="btn">Criar Novo Personagem</a>
+    </div>
+</div>
+{% endblock %}

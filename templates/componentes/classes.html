@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="selecao-classe">
+    <h2>Seleção de Classe</h2>
+    <p>Jogador: {{ session.nome_jogador }}</p>
+    <p>Raça: {{ session.raca.nome }}</p>
+    
+    <form action="{{ url_for('escolher_classe') }}" method="post">
+        <div class="form-group">
+            <label>Escolha como selecionar a classe:</label>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="opcao_classe" value="escolher" required>
+                    Escolher uma classe
+                </label>
+                <label>
+                    <input type="radio" name="opcao_classe" value="sortear">
+                    Sortear aleatoriamente
+                </label>
+            </div>
+        </div>
+        
+        <div id="lista-classes" class="lista-classes">
+            <h3>Classes Disponíveis:</h3>
+            {% for id, classe in classes.items() %}
+            <div class="classe-item">
+                <label>
+                    <input type="radio" name="classe_id" value="{{ id }}">
+                    <strong>{{ classe.nome }}</strong> - Dado de Vida: {{ classe.dado_vida }}
+                </label>
+                <div class="habilidades">
+                    <strong>Habilidades:</strong>
+                    <ul>
+                        {% for habilidade in classe.habilidades %}
+                        <li>{{ habilidade }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <button type="submit">Finalizar Personagem</button>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const opcoes = document.querySelectorAll('input[name="opcao_classe"]');
+    const listaClasses = document.getElementById('lista-classes');
+    
+    opcoes.forEach(opcao => {
+        opcao.addEventListener('change', function() {
+            if (this.value === 'sortear') {
+                listaClasses.style.display = 'none';
+            } else {
+                listaClasses.style.display = 'block';
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
