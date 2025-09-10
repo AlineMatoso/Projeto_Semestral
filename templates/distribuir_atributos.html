@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="distribuicao-atributos">
+    <h2>Distribuição de Atributos - Modo {{ modo_nome }}</h2>
+    <p>{{ modo_desc }}</p>
+    
+    <div class="valores-rolados">
+        <h3>Valores Rolados:</h3>
+        <div class="valores-lista">
+            {% for valor in valores %}
+            <span class="valor-pill">{{ valor }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    
+    {% if session.get('erro_distribuicao') %}
+    <div class="erro">
+        <p>{{ session.get('erro_distribuicao') }}</p>
+    </div>
+    {% endif %}
+    
+    <form action="{{ url_for('processar_distribuicao') }}" method="post">
+        <div class="atributos-form">
+            <div class="form-group">
+                <label for="forca">Força:</label>
+                <input type="number" id="forca" name="forca" min="3" max="18" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="destreza">Destreza:</label>
+                <input type="number" id="destreza" name="destreza" min="3" max="18" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="constituicao">Constituição:</label>
+                <input type="number" id="constituicao" name="constituicao" min="3" max="18" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="inteligencia">Inteligência:</label>
+                <input type="number" id="inteligencia" name="inteligencia" min="3" max="18" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="sabedoria">Sabedoria:</label>
+                <input type="number" id="sabedoria" name="sabedoria" min="3" max="18" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="carisma">Carisma:</label>
+                <input type="number" id="carisma" name="carisma" min="3" max="18" required>
+            </div>
+        </div>
+        
+        <button type="submit">Confirmar Distribuição</button>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Obter valores do template de forma segura
+ 
+    //const valores = {{ valores | tojson }}
+    
+    console.log('Valores recebidos:', valores)
+
+    // Verificar se temos valores válidos
+    if (valores.length === 0 || valores.some(v => isNaN(v))) {
+        console.error('Valores inválidos recebidos:', valores);
+        return;
+    }
+    
+    // Ordenar valores para facilitar a distribuição
+    valores.sort((a, b) => a - b);
+    
+    // Preencher os campos com valores padrão
+    const campos = [
+        'forca', 'destreza', 'constituicao', 
+        'inteligencia', 'sabedoria', 'carisma'
+    ];
+    
+    // Preencher com valores ordenados (maior para os atributos mais importantes)
+    campos.forEach((campo, index) => {
+        const input = document.getElementById(campo);
+        if (input && valores[5 - index] !== undefined) {
+            input.value = valores[5 - index];
+        }
+    });
+    
+    // Validar se os valores distribuídos correspondem aos valores rolados
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const valoresDigitados = [];
+            
+            campos.forEach(campo => {
+                const input = document.getElementById(campo);
+                if (input) {
+                    const valor = parseInt(input.value);
+                    if (!isNaN(valor)) {
+                        valoresDigitados.push(valor);
+                    }
+                }
+            });
+            
+            // Ordenar para comparar
+            const valoresOriginaisOrdenados = [...valores].sort((a, b) => a - b);
+            valoresDigitados.sort((a, b) => a - b);
+            
+            console.log('Valores originais:', valoresOriginaisOrdenados);
+            console.log('Valores digitados:', valoresDigitados);
+            
+            // Verificar se os valores coincidem
+            let valoresCoincidem = valoresOriginaisOrdenados.length === valoresDigitados.length;
+            if (valoresCoincidem) {
+                for (let i = 0; i < valoresOriginaisOrdenados.length; i++) {
+                    if (valoresOriginaisOrdenados[i] !== valoresDigitados[i]) {
+                        valoresCoincidem = false;
+                        break;
+                    }
+                }
+            }
+            
+            if (!valoresCoincidem) {
+                e.preventDefault();
+                alert('Os valores distribuídos não correspondem aos valores rolados. Por favor, verifique.');
+            }
+        });
+    }
+});
+
+</script>
+{% endblock %}

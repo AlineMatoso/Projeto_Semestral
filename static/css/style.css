@@ -4,11 +4,21 @@
     box-sizing: border-box;
 }
 
+:root {
+    --rosa: #F8C8DC;
+    --lilas: #D8BFD8;
+    --verde-bebe: #D1E8E2;
+    --verde-bebe-escuro: #B9D7D5;
+    --texto-escuro: #4A4A4A;
+    --branco: #FFFFFF;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    color: #333;
-    background-color: #f4f4f4;
+    color: var(--texto-escuro);
+    background: linear-gradient(135deg, var(--rosa) 0%, var(--lilas) 50%, var(--verde-bebe) 100%);
+    min-height: 100vh;
 }
 
 .container {
@@ -21,13 +31,28 @@ header {
     text-align: center;
     margin-bottom: 30px;
     padding: 20px;
-    background-color: #8B0000;
-    color: white;
-    border-radius: 5px;
+    background-color: var(--lilas);
+    color: var(--texto-escuro);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 header h1 {
     font-size: 2.5rem;
+    margin-bottom: 5px;
+}
+
+header p {
+    font-size: 1.2rem;
+    font-weight: 300;
+}
+
+.criacao-personagem, .selecao-raca, .selecao-classe, .ficha-personagem {
+    background-color: var(--branco);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
 }
 
 .form-group {
@@ -36,42 +61,67 @@ header h1 {
 
 label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     font-weight: bold;
+    color: var(--texto-escuro);
 }
 
 input[type="text"],
 input[type="number"] {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: 12px;
+    border: 2px solid var(--lilas);
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border-color: var(--rosa);
+    outline: none;
 }
 
 .radio-group label {
-    display: block;
-    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
     font-weight: normal;
+    padding: 10px;
+    background-color: var(--verde-bebe);
+    border-radius: 6px;
+    transition: background-color 0.3s;
+}
+
+.radio-group label:hover {
+    background-color: var(--verde-bebe-escuro);
 }
 
 .radio-group input[type="radio"] {
-    margin-right: 10px;
+    margin-right: 12px;
+    width: 18px;
+    height: 18px;
 }
 
 button, .btn {
     display: inline-block;
-    padding: 10px 20px;
-    background-color: #8B0000;
-    color: white;
+    padding: 12px 24px;
+    background-color: var(--lilas);
+    color: var(--texto-escuro);
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     text-decoration: none;
     font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 button:hover, .btn:hover {
-    background-color: #A52A2A;
+    background-color: var(--rosa);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .lista-racas, .lista-classes {
@@ -79,11 +129,17 @@ button:hover, .btn:hover {
 }
 
 .raca-item, .classe-item {
-    border: 1px solid #ddd;
+    border: 2px solid var(--lilas);
     padding: 15px;
     margin-bottom: 15px;
-    border-radius: 4px;
-    background-color: white;
+    border-radius: 8px;
+    background-color: var(--branco);
+    transition: transform 0.3s;
+}
+
+.raca-item:hover, .classe-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .habilidades {
@@ -96,21 +152,23 @@ button:hover, .btn:hover {
 }
 
 .habilidades li {
-    padding: 5px 0;
-    border-bottom: 1px dotted #eee;
+    padding: 8px 0;
+    border-bottom: 1px dotted var(--lilas);
 }
 
 .ficha-personagem {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: var(--branco);
 }
 
 .info-basica {
     margin-bottom: 20px;
     padding-bottom: 20px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 2px solid var(--lilas);
+}
+
+.info-basica p {
+    margin-bottom: 8px;
+    font-size: 1.1rem;
 }
 
 .atributos table {
@@ -120,19 +178,31 @@ button:hover, .btn:hover {
 }
 
 .atributos th, .atributos td {
-    padding: 10px;
+    padding: 12px;
     text-align: left;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--lilas);
 }
 
 .atributos th {
-    background-color: #f8f8f8;
+    background-color: var(--verde-bebe);
+    color: var(--texto-escuro);
+}
+
+.atributos tr:hover {
+    background-color: var(--rosa);
 }
 
 .info-raca, .info-classe {
     margin-bottom: 20px;
     padding-bottom: 20px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 2px solid var(--lilas);
+}
+
+.info-raca h3, .info-classe h3 {
+    margin-bottom: 15px;
+    color: var(--texto-escuro);
+    border-bottom: 2px solid var(--lilas);
+    padding-bottom: 8px;
 }
 
 .info-raca ul, .info-classe ul {
@@ -141,8 +211,18 @@ button:hover, .btn:hover {
 }
 
 .info-raca li, .info-classe li {
-    padding: 5px 0;
-    border-bottom: 1px dotted #eee;
+    padding: 8px 0;
+    border-bottom: 1px dotted var(--lilas);
+    position: relative;
+    padding-left: 20px;
+}
+
+.info-raca li:before, .info-classe li:before {
+    content: "•";
+    color: var(--lilas);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
 }
 
 .acoes {
@@ -154,5 +234,109 @@ footer {
     text-align: center;
     margin-top: 30px;
     padding: 20px;
-    color: #666;
+    color: var(--texto-escuro);
+    background-color: var(--lilas);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para os botões de rádio sem bolinhas */
+input[type="radio"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--lilas);
+    border-radius: 50%;
+    outline: none;
+    margin-right: 10px;
+    position: relative;
+    vertical-align: middle;
+}
+
+input[type="radio"]:checked:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--lilas);
+}
+
+/* Estilos para telas menores */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .criacao-personagem, .selecao-raca, .selecao-classe, .ficha-personagem {
+        padding: 20px;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    .atributos table {
+        font-size: 0.9rem;
+    }
+    
+    .atributos th, .atributos td {
+        padding: 8px;
+    }
+}
+
+/* Estilos para a página de distribuição de atributos */
+.distribuicao-atributos {
+    background-color: var(--branco);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.valores-rolados {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: var(--verde-bebe);
+    border-radius: 8px;
+}
+
+.valores-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.valor-pill {
+    background-color: var(--lilas);
+    color: var(--texto-escuro);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.erro {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 4px solid #c62828;
+}
+
+.atributos-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+@media (max-width: 768px) {
+    .atributos-form {
+        grid-template-columns: 1fr;
+    }
 }

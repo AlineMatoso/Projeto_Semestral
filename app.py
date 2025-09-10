@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 import random
+import json
 from Racas import Humano, Elfo, Anao, Halfling, MeioElfo, Gnomo, GeradorRaca
 from Classes import Guerreiro, Barbaro, Druida, Clerigo, Mago, Ladrao, GeradorClasse
 from ModoJogo import ModoClassico, ModoAventureiro, ModoHeroico
@@ -96,15 +97,83 @@ def criar_personagem():
         return redirect(url_for('index'))
     
     session['modo_jogo'] = modo_jogo
-    atributos = modos[modo_jogo].rolar_atributos()
-    session['atributos'] = atributos
+    resultado = modos[modo_jogo].rolar_atributos()
     
-    # Redirecionar para seleção de raça
+    # Se for modo clássico, já temos os atributos prontos
+    if modo_jogo == '1':
+        session['atributos'] = resultado
+        return redirect(url_for('selecionar_raca'))
+    else:
+        # Para modos Aventureiro e Heroico, precisamos distribuir os valores
+        session['valores_atributos'] = resultado['valores']
+        session['atributos_distribuidos'] = False
+        return redirect(url_for('distribuir_atributos'))
+
+@app.route('/distribuir_atributos')
+def distribuir_atributos():
+    """Página para distribuir os valores dos atributos"""
+    if 'valores_atributos' not in session:
+        return redirect(url_for('index'))
+    
+    valores = session['valores_atributos']
+    modo = session['modo_jogo']
+    
+    if modo == '2':
+        modo_nome = "Aventureiro"
+        modo_desc = "Distribua os valores rolados (3d6) livremente entre os atributos"
+    else:
+        modo_nome = "Heroico"
+        modo_desc = "Distribua os valores rolados (4d6, eliminando o menor) livremente entre os atributos"
+    
+    # Converter valores para JSON string para usar no template
+    valores_json = json.dumps(valores)
+    
+    return render_template('distribuir_atributos.html', 
+                         valores=valores,
+                         valores_json=valores_json,
+                         modo_nome=modo_nome, 
+                         modo_desc=modo_desc)
+
+@app.route('/processar_distribuicao', methods=['POST'])
+def processar_distribuicao():
+    """Processa a distribuição dos atributos"""
+    if 'valores_atributos' not in session:
+        return redirect(url_for('index'))
+    
+    # Obter os valores dos atributos do formulário
+    atributos = {
+        'Força': int(request.form.get('forca')),
+        'Destreza': int(request.form.get('destreza')),
+        'Constituição': int(request.form.get('constituicao')),
+        'Inteligência': int(request.form.get('inteligencia')),
+        'Sabedoria': int(request.form.get('sabedoria')),
+        'Carisma': int(request.form.get('carisma'))
+    }
+    
+    # Verificar se todos os valores foram usados (validação básica)
+    valores_originais = sorted(session['valores_atributos'])
+    valores_distribuidos = sorted(list(atributos.values()))
+    
+    if valores_originais != valores_distribuidos:
+        # Se os valores não coincidem, redirecionar de volta
+        session['erro_distribuicao'] = "Os valores distribuídos não correspondem aos valores rolados."
+        return redirect(url_for('distribuir_atributos'))
+    
+    # Salvar os atributos e continuar
+    session['atributos'] = atributos
+    session['atributos_distribuidos'] = True
+    session.pop('valores_atributos', None)
+    session.pop('erro_distribuicao', None)
+    
     return redirect(url_for('selecionar_raca'))
 
 @app.route('/selecionar_raca')
 def selecionar_raca():
     """Página para seleção de raça"""
+    # Verificar se os atributos já foram distribuídos (para modos 2 e 3)
+    if session.get('modo_jogo') != '1' and not session.get('atributos_distribuidos'):
+        return redirect(url_for('distribuir_atributos'))
+    
     gerador_raca = GeradorRaca()
     racas = gerador_raca.racas
     
@@ -143,6 +212,9 @@ def escolher_raca():
 @app.route('/selecionar_classe')
 def selecionar_classe():
     """Página para seleção de classe"""
+    if 'raca' not in session:
+        return redirect(url_for('selecionar_raca'))
+    
     gerador_classe = GeradorClasse()
     classes = gerador_classe.classes
     

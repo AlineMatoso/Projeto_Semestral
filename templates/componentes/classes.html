@@ -3,8 +3,8 @@
 {% block content %}
 <div class="selecao-classe">
     <h2>Seleção de Classe</h2>
-    <p>Jogador: {{ session.nome_jogador }}</p>
-    <p>Raça: {{ session.raca.nome }}</p>
+    <p>Jogador: <strong>{{ session.nome_jogador }}</strong></p>
+    <p>Raça: <strong>{{ session.raca.nome }}</strong></p>
     
     <form action="{{ url_for('escolher_classe') }}" method="post">
         <div class="form-group">
@@ -49,6 +49,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     const opcoes = document.querySelectorAll('input[name="opcao_classe"]');
     const listaClasses = document.getElementById('lista-classes');
+    
+    // Esconder lista inicialmente se sortear estiver selecionado
+    if (document.querySelector('input[name="opcao_classe"][value="sortear"]').checked) {
+        listaClasses.style.display = 'none';
+    }
     
     opcoes.forEach(opcao => {
         opcao.addEventListener('change', function() {

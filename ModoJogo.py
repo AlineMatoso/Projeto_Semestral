@@ -16,7 +16,6 @@ class ModoClassico(ModoJogo):
         atributos = {}
         nomes = ["Força", "Destreza", "Constituição", "Inteligência", "Sabedoria", "Carisma"]
         
-        print("\nRolando 3d6 para cada atributo na ordem fixa...")
         for nome in nomes:
             dado1 = random.randint(1, 6)
             dado2 = random.randint(1, 6)
@@ -32,7 +31,6 @@ class ModoAventureiro(ModoJogo):
     
     def rolar_atributos(self):
         valores = []
-        print("\nRolando 3d6 seis vezes...")
         for i in range(6):
             dado1 = random.randint(1, 6)
             dado2 = random.randint(1, 6)
@@ -40,27 +38,7 @@ class ModoAventureiro(ModoJogo):
             soma = dado1 + dado2 + dado3
             valores.append(soma)
         
-        atributos = {}
-        nomes = ["Força", "Destreza", "Constituição", "Inteligência", "Sabedoria", "Carisma"]
-        
-        print(f"\nValores rolados: {valores}")
-        print("Distribua esses valores nos atributos na ordem que desejar.")
-        
-        for nome in nomes:
-            while True:
-                try:
-                    print(f"\nValores disponíveis: {valores}")
-                    valor = int(input(f"Digite o valor para {nome}: "))
-                    if valor in valores:
-                        atributos[nome] = valor
-                        valores.remove(valor)
-                        break
-                    else:
-                        print("Valor não está na lista de valores rolados. Tente novamente.")
-                except ValueError:
-                    print("Por favor, digite um número inteiro.")
-        
-        return atributos
+        return {"valores": valores, "distribuicao_pendente": True}
 
 class ModoHeroico(ModoJogo):
     def __init__(self):
@@ -68,31 +46,10 @@ class ModoHeroico(ModoJogo):
     
     def rolar_atributos(self):
         valores = []
-        print("\nRolando 4d6 seis vezes (eliminando o menor valor)...")
         for i in range(6):
             dados = [random.randint(1, 6) for _ in range(4)]
             dados.sort()
             soma = sum(dados[1:])  # Elimina o menor (primeiro da lista ordenada)
             valores.append(soma)
         
-        atributos = {}
-        nomes = ["Força", "Destreza", "Constituição", "Inteligência", "Sabedoria", "Carisma"]
-        
-        print(f"\nValores rolados: {valores}")
-        print("Distribua esses valores nos atributos na ordem que desejar.")
-        
-        for nome in nomes:
-            while True:
-                try:
-                    print(f"\nValores disponíveis: {valores}")
-                    valor = int(input(f"Digite o valor para {nome}: "))
-                    if valor in valores:
-                        atributos[nome] = valor
-                        valores.remove(valor)
-                        break
-                    else:
-                        print("Valor não está na lista de valores rolados. Tente novamente.")
-                except ValueError:
-                    print("Por favor, digite um número inteiro.")
-        
-        return atributos
+        return {"valores": valores, "distribuicao_pendente": True}
