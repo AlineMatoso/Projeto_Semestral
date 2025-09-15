@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 import random
 import json
-from Racas import Humano, Elfo, Anao, Halfling, MeioElfo, Gnomo, GeradorRaca
-from Classes import Guerreiro, Barbaro, Druida, Clerigo, Mago, Ladrao, GeradorClasse
-from ModoJogo import ModoClassico, ModoAventureiro, ModoHeroico
+from model.Racas import Humano, Elfo, Anao, Halfling, MeioElfo, Gnomo, GeradorRaca
+from model.Classes import Guerreiro, Barbaro, Druida, Clerigo, Mago, Ladrao, GeradorClasse
+from model.ModoJogo import ModoClassico, ModoAventureiro, ModoHeroico
 
 app = Flask(__name__)
 app.secret_key = 'sua_chave_secreta_aqui'  # Alterar para produção
