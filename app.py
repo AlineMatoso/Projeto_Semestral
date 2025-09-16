@@ -6,7 +6,7 @@ from model.Classes import Guerreiro, Barbaro, Druida, Clerigo, Mago, Ladrao, Ger
 from model.ModoJogo import ModoClassico, ModoAventureiro, ModoHeroico
 
 app = Flask(__name__)
-app.secret_key = 'sua_chave_secreta_aqui'  # Alterar para produção
+app.secret_key = 'sua_chave_secreta_aqui'  
 
 class PersonagemController:
     @staticmethod
@@ -105,7 +105,14 @@ def criar_personagem():
         return redirect(url_for('selecionar_raca'))
     else:
         # Para modos Aventureiro e Heroico, precisamos distribuir os valores
-        session['valores_atributos'] = resultado['valores']
+        #session['valores_atributos'] = resultado['valores']
+        # Na linha 108 do app.py, substitua por:
+        if 'valores' in resultado:
+            session['valores_atributos'] = resultado['valores']
+        else:
+    # Log para debug ou valor padrão
+            print("DEBUG: Chave 'valores' não encontrada em resultado:", resultado)
+            session['valores_atributos'] = {}  # Ou algum valor padrão
         session['atributos_distribuidos'] = False
         return redirect(url_for('distribuir_atributos'))
 
@@ -124,6 +131,14 @@ def distribuir_atributos():
     else:
         modo_nome = "Heroico"
         modo_desc = "Distribua os valores rolados (4d6, eliminando o menor) livremente entre os atributos"
+    
+    
+    if not isinstance(valores, list):
+        print(f"DEBUG: valores não é lista, é {type(valores)}: {valores}")
+        if isinstance(valores, dict) and 'valores' in valores:
+            valores = valores['valores']
+        else:
+            valores = []
     
     # Converter valores para JSON string para usar no template
     valores_json = json.dumps(valores)

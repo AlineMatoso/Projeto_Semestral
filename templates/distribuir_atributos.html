@@ -58,29 +58,22 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Obter valores do template de forma segura
- 
-    //const valores = {{ valores | tojson }}
-    
-    console.log('Valores recebidos:', valores)
+document.addEventListener('DOMContentLoaded', function() {   
+    console.log('Valores recebidos:', valores);
 
-    // Verificar se temos valores válidos
     if (valores.length === 0 || valores.some(v => isNaN(v))) {
         console.error('Valores inválidos recebidos:', valores);
         return;
     }
     
-    // Ordenar valores para facilitar a distribuição
     valores.sort((a, b) => a - b);
     
-    // Preencher os campos com valores padrão
+
     const campos = [
         'forca', 'destreza', 'constituicao', 
         'inteligencia', 'sabedoria', 'carisma'
     ];
     
-    // Preencher com valores ordenados (maior para os atributos mais importantes)
     campos.forEach((campo, index) => {
         const input = document.getElementById(campo);
         if (input && valores[5 - index] !== undefined) {
@@ -88,7 +81,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Validar se os valores distribuídos correspondem aos valores rolados
     const form = document.querySelector('form');
     if (form) {
         form.addEventListener('submit', function(e) {
@@ -104,14 +96,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
             
-            // Ordenar para comparar
             const valoresOriginaisOrdenados = [...valores].sort((a, b) => a - b);
             valoresDigitados.sort((a, b) => a - b);
             
             console.log('Valores originais:', valoresOriginaisOrdenados);
             console.log('Valores digitados:', valoresDigitados);
             
-            // Verificar se os valores coincidem
             let valoresCoincidem = valoresOriginaisOrdenados.length === valoresDigitados.length;
             if (valoresCoincidem) {
                 for (let i = 0; i < valoresOriginaisOrdenados.length; i++) {

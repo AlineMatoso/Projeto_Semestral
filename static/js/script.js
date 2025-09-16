@@ -1,37 +1,30 @@
-// Scripts para interatividade da interface
 document.addEventListener('DOMContentLoaded', function() {
-    // Toggle de visibilidade para listas de raças e classes
-    const toggleLists = function() {
-        const opcoesRaca = document.querySelectorAll('input[name="opcao_raca"]');
-        const listaRacas = document.getElementById('lista-racas');
-        
-        if (opcoesRaca.length && listaRacas) {
-            opcoesRaca.forEach(opcao => {
-                opcao.addEventListener('change', function() {
-                    if (this.value === 'sortear') {
-                        listaRacas.style.display = 'none';
-                    } else {
-                        listaRacas.style.display = 'block';
-                    }
-                });
-            });
-        }
-        
-        const opcoesClasse = document.querySelectorAll('input[name="opcao_classe"]');
-        const listaClasses = document.getElementById('lista-classes');
-        
-        if (opcoesClasse.length && listaClasses) {
-            opcoesClasse.forEach(opcao => {
-                opcao.addEventListener('change', function() {
-                    if (this.value === 'sortear') {
-                        listaClasses.style.display = 'none';
-                    } else {
-                        listaClasses.style.display = 'block';
-                    }
-                });
-            });
-        }
-    };
+    // Configurar toggles para raças e classes
+    configurarToggle('opcao_raca', 'lista-racas');
+    configurarToggle('opcao_classe', 'lista-classes');
     
-    toggleLists();
+    // Função reutilizável
+    function configurarToggle(nomeInput, idLista) {
+        const opcoes = document.querySelectorAll(`input[name="${nomeInput}"]`);
+        const lista = document.getElementById(idLista);
+        
+        if (!opcoes.length || !lista) return;
+        
+        // Configurar cada opção
+        opcoes.forEach(opcao => {
+            opcao.addEventListener('change', function() {
+                lista.style.display = this.value === 'sortear' ? 'none' : 'block';
+                
+                // Adicionar feedback visual
+                lista.style.transition = 'opacity 0.3s ease';
+                lista.style.opacity = this.value === 'sortear' ? '0' : '1';
+            });
+        });
+        
+        // Configurar estado inicial
+        const selecionado = document.querySelector(`input[name="${nomeInput}"]:checked`);
+        if (selecionado) {
+            lista.style.display = selecionado.value === 'sortear' ? 'none' : 'block';
+        }
+    }
 });
